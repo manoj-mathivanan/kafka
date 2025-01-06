@@ -197,6 +197,7 @@ public class ProducerPerformance {
 
             List<String> payloadList = new ArrayList<>();
             try (Scanner payLoadScanner = new Scanner(path, StandardCharsets.UTF_8)) {
+                //setting the delimiter while parsing the file, avoids loading entire data in memory before split
                 payLoadScanner.useDelimiter(payloadDelimiter);
                 while (payLoadScanner.hasNext()) {
                     payloadList.add(payLoadScanner.next());
