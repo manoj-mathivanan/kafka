@@ -105,6 +105,20 @@ public class ProducerPerformanceTest {
     }
 
     @Test
+    public void testReadPayloadFileWithAlternateDelimiter() throws Exception {
+        File payloadFile = createTempFile("Hello~~Kafka");
+        String payloadFilePath = payloadFile.getAbsolutePath();
+        String payloadDelimiter = "~~";
+
+        List<byte[]> payloadByteList = ProducerPerformance.readPayloadFile(payloadFilePath, payloadDelimiter);
+
+        assertEquals(2, payloadByteList.size());
+        assertEquals("Hello", new String(payloadByteList.get(0)));
+        assertEquals("Kafka", new String(payloadByteList.get(1)));
+        Utils.delete(payloadFile);
+    }
+
+    @Test
     public void testNumberOfCallsForSendAndClose() throws IOException {
         doReturn(null).when(producerMock).send(any(), any());
         doReturn(producerMock).when(producerPerformanceSpy).createKafkaProducer(any(Properties.class));
